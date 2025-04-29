@@ -143,7 +143,7 @@ class Todoist(inkycal_module):
             if task["section"]:
                 section_lengths.append(int(self.font.getlength(task['section']) * 1.1))
             if task["due"]:
-                due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
+                due_lengths.append(int(self.font.getlength(task['due']) * 0.925))
 
         # Get maximum width of project dues for selected font
         due_offset = int(max(due_lengths)) if due_lengths else 0
@@ -183,9 +183,9 @@ class Todoist(inkycal_module):
                         if todo['due']:
                             write(
                                 im_black,
-                                (line_x + line_height, line_y),
+                                (line_x + line_height, line_y + 1),
                                 (due_offset, line_height),
-                                todo['due'], font=self.font, alignment='left')
+                                todo['due'], font=ImageFont.truetype(self.font.path, self.fontsize - 2), alignment='left')
 
                         if todo['name']:
                             # Add todos name
