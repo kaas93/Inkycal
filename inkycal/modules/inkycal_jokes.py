@@ -75,7 +75,7 @@ class Jokes(inkycal_module):
         header = {"accept": "text/plain"}
         response = requests.get(url, headers=header)
         response.encoding = 'utf-8'  # Change encoding to UTF-8
-        joke = response.text.rstrip()  # use to remove newlines
+        joke = "\"" + response.text.rstrip() + "\""  # use to remove newlines
         logger.debug(f"joke: {joke}")
 
         # wrap text in case joke is too large
@@ -93,7 +93,7 @@ class Jokes(inkycal_module):
                 logger.error('Ran out of lines for this joke :/')
                 break
             write(im_black, line_positions[_], (line_width, line_height),
-                  wrapped[_], font=self.font, alignment='left')
+                  wrapped[_], font=self.font, alignment='center')
 
         # Return images for black and colour channels
         return im_black, im_colour
