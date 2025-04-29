@@ -87,10 +87,10 @@ class Todoist(inkycal_module):
         line_spacing = 1
         text_bbox_height = self.font.getbbox("hg")[3]
         line_height = text_bbox_height + line_spacing + 2
-        max_lines = (im_height - 24)// line_height
+        max_lines = (im_height - self.fontsize - 12)// line_height
 
         # Calculate padding from top so the lines look centralised
-        spacing_top = 24 + int(im_height % line_height / 2)
+        spacing_top = self.fontsize + 6 + int(im_height % line_height / 2)
 
         # Calculate line_positions
         line_positions = [
@@ -159,7 +159,7 @@ class Todoist(inkycal_module):
 
         write(
             im_colour,
-            (0, int(im_height % line_height / 2)),
+            (0, 3 + int(im_height % line_height / 2)),
             (im_width, line_height),
             "Upcoming Events", font=ImageFont.truetype(self.font.path, self.fontsize + 4), alignment='center')
 
