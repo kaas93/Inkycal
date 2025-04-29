@@ -19,4 +19,4 @@ class Settings:
     TEMPORARY_FOLDER = os.path.join(basedir, "tmp")
     VCOM = "2.0"
     # /boot/settings.json is path on older releases, while the latter is more the more recent ones
-    SETTINGS_JSON_PATHS = ["/boot/settings.json", "/boot/firmware/settings.json"]
+    SETTINGS_JSON_PATHS = ["/boot/settings.json", "/boot/firmware/settings.json", os.path.join(basedir, "../settings.json")]

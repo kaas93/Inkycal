@@ -121,6 +121,7 @@ class Todoist(inkycal_module):
                                 'empty')
             # filtered version of all active tasks
             all_active_tasks = [task for task in all_active_tasks if task.project_id in filtered_project_ids]
+            section_names_by_id = {section_id: self._api.get_section(section_id).name for section_id in [task.section_id for task in all_active_tasks]}
 
         # Simplify the tasks for faster processing
         simplified = [
@@ -128,6 +129,7 @@ class Todoist(inkycal_module):
                 'name': task.content,
                 'due': arrow.get(task.due.date, "YYYY-MM-DD").format("D-MMM-YY") if task.due else "",
                 'priority': task.priority,
+                'section': section_names_by_id[task.section_id],
                 'project': filtered_project_ids_and_names[task.project_id]
             }
             for task in all_active_tasks
@@ -135,17 +137,17 @@ class Todoist(inkycal_module):
 
         logger.debug(f'simplified: {simplified}')
 
-        project_lengths = []
+        section_lengths = []
         due_lengths = []
 
         for task in simplified:
-            if task["project"]:
-                project_lengths.append(int(self.font.getlength(task['project']) * 1.1))
+            if task["section"]:
+                section_lengths.append(int(self.font.getlength(task['section']) * 1.1))
             if task["due"]:
                 due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
 
-        # Get maximum width of project names for selected font
-        project_offset = int(max(project_lengths)) if project_lengths else 0
+        # Get maximum width of section names for selected font
+        section_offset = int(max(section_lengths)) if section_lengths else 0
 
         # Get maximum width of project dues for selected font
         due_offset = int(max(due_lengths)) if due_lengths else 0
@@ -167,18 +169,18 @@ class Todoist(inkycal_module):
                     if cursor < max_lines:
                         line_x, line_y = line_positions[cursor]
 
-                        if todo['project']:
-                            # Add todos project name
+                        if todo['section']:
+                            # Add todos section name
                             write(
                                 im_colour, line_positions[cursor],
-                                (project_offset, line_height),
-                                todo['project'], font=self.font, alignment='left')
+                                (section_offset, line_height),
+                                todo['section'], font=self.font, alignment='left')
 
                         # Add todos due if not empty
                         if todo['due']:
                             write(
                                 im_black,
-                                (line_x + project_offset, line_y),
+                                (line_x + section_offset, line_y),
                                 (due_offset, line_height),
                                 todo['due'], font=self.font, alignment='left')
 
@@ -186,8 +188,8 @@ class Todoist(inkycal_module):
                             # Add todos name
                             write(
                                 im_black,
-                                (line_x + project_offset + due_offset, line_y),
-                                (im_width - project_offset - due_offset, line_height),
+                                (line_x + section_offset + due_offset, line_y),
+                                (im_width - section_offset - due_offset, line_height),
                                 todo['name'], font=self.font, alignment='left')
 
                         cursor += 1
