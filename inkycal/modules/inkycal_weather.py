@@ -373,11 +373,11 @@ class Weather(inkycal_module):
         windspeed_pos = (col2 + icon_small - 2, row3)
 
         # Positions for sunrise, sunset, moonphase
-        moonphase_pos = (col3, row1)
-        sunrise_icon_pos = (col3, row2)
-        sunrise_time_pos = (col3 + icon_small - 2, row2)
-        sunset_icon_pos = (col3, row3)
-        sunset_time_pos = (col3 + icon_small - 2, row3)
+        moonphase_pos = (col3 - 4, row1)
+        sunrise_icon_pos = (col3 - 4, row2)
+        sunrise_time_pos = (col3 - 4 + icon_small - 2, row2)
+        sunset_icon_pos = (col3 - 4, row3)
+        sunset_time_pos = (col3 - 4 + icon_small - 2, row3)
 
         # Positions for forecast 1
         stamp_fc1 = (col4, row1) # noqa
@@ -520,7 +520,7 @@ class Weather(inkycal_module):
             temp = fc_data[f'fc{pos}']['temp']
 
             write(im_black, eval(f'stamp_fc{pos}'), (col_width, row_height),
-                  stamp, font=self.font)
+                  stamp, font=ImageFont.truetype(self.font.path, self.fontsize + 2))
             draw_icon(im_colour, eval(f'icon_fc{pos}'), (col_width, row_height + line_gap * 2),
                       icon)
             write(im_black, eval(f'temp_fc{pos}'), (col_width, row_height),
