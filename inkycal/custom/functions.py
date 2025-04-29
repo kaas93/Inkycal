@@ -366,14 +366,15 @@ def draw_avatar(im_black: Image, im_colour: Image, xy: Tuple[int, int], size: Tu
     avatarBg = Image.new("RGBA", size, color="white")
 
     draw = ImageDraw.Draw(avatarBg)
-    draw.circle((0, 0), size, fill="black", font=font)
+    draw.circle((size[0] // 2, size[1] // 2), size[1] // 2, fill="black")
 
     im_colour.paste(avatarBg, xy)
 
     avatar = Image.new("RGBA", size, color="white")
 
     draw = ImageDraw.Draw(avatar)
-    text_width, text_height = draw.textsize(initials, font=font)
+    text_width = draw.textlength(initials, font=font)
+    text_height = font.getbbox(initials)[3]
     text_x = (size[0] - text_width) // 2
     text_y = (size[1] - text_height) // 2
     draw.text((text_x, text_y), initials, fill="black", font=font)
