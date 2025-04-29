@@ -86,7 +86,7 @@ class Todoist(inkycal_module):
         # Set some parameters for formatting todos
         line_spacing = 1
         text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing
+        line_height = text_bbox_height[3] + line_spacing + 2
         max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
@@ -169,7 +169,7 @@ class Todoist(inkycal_module):
                             draw_avatar(im_black,
                                         im_colour,
                                         (line_x, line_y + 2),
-                                        (line_height - 2, line_height - 2),
+                                        (line_height - 4, line_height - 4),
                                         todo['section'],
                                         font=ImageFont.truetype(self.font.path, self.fontsize - 2))
 
