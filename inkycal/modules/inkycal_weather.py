@@ -312,7 +312,7 @@ class Weather(inkycal_module):
         # |----------|----------|----------|----------|----------|----------|----------|
 
         # Calculate size rows and columns
-        col_width = im_width // 7
+        col_width = im_width // 6 - 4
 
         # Ratio width height
         image_ratio = im_width / im_height
@@ -336,12 +336,12 @@ class Weather(inkycal_module):
 
         # Calculate the x-axis position of each col
         col1 = spacing_top
-        col2 = col1 + col_width
-        col3 = col2 + col_width
-        col4 = col3 + col_width
-        col5 = col4 + col_width
-        col6 = col5 + col_width
-        col7 = col6 + col_width
+        col2 = 4 + col1 + col_width
+        col3 = 4 + col2 + col_width
+        col4 = 4 + col3 + col_width
+        col5 = 4 + col4 + col_width
+        col6 = 4 + col5 + col_width
+        col7 = 4 + col6 + col_width
 
         # Calculate the y-axis position of each row
         line_gap = int((im_height - spacing_top - 3 * row_height) // 4)
@@ -433,7 +433,7 @@ class Weather(inkycal_module):
 
             logger.debug("getting daily forecasts")
 
-            daily_forecasts = [self.owm.get_forecast_for_day(days) for days in range(1, 5)]
+            daily_forecasts = [self.owm.get_forecast_for_day(days) for days in range(1, 4)]
 
             for index, forecast in enumerate(daily_forecasts):
                 fc_data['fc' + str(index + 1)] = {

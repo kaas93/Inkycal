@@ -168,7 +168,7 @@ class Todoist(inkycal_module):
                         if todo['section']:
                             draw_avatar(im_black,
                                         im_colour,
-                                        (line_x, line_y + 2),
+                                        (line_x, line_y + 4),
                                         (line_height - 4, line_height - 4),
                                         todo['section'],
                                         font=ImageFont.truetype(self.font.path, self.fontsize - 2))
