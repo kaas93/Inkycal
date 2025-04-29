@@ -87,7 +87,6 @@ class Todoist(inkycal_module):
         line_spacing = 1
         text_bbox_height = self.font.getbbox("hg")
         line_height = text_bbox_height[3] + line_spacing
-        line_width = im_width
         max_lines = im_height // line_height
 
         # Calculate padding from top so the lines look centralised
@@ -127,7 +126,7 @@ class Todoist(inkycal_module):
         simplified = [
             {
                 'name': task.content,
-                'due': arrow.get(task.due.date, "YYYY-MM-DD").format("D-MMM-YY") if task.due else "",
+                'due': arrow.get(task.due.date, "YYYY-MM-DD").format("DD-MM-YY") if task.due else "",
                 'priority': task.priority,
                 'section': section_names_by_id[task.section_id],
                 'project': filtered_project_ids_and_names[task.project_id]
@@ -145,9 +144,6 @@ class Todoist(inkycal_module):
                 section_lengths.append(int(self.font.getlength(task['section']) * 1.1))
             if task["due"]:
                 due_lengths.append(int(self.font.getlength(task['due']) * 1.1))
-
-        # Get maximum width of section names for selected font
-        section_offset = int(max(section_lengths)) if section_lengths else 0
 
         # Get maximum width of project dues for selected font
         due_offset = int(max(due_lengths)) if due_lengths else 0
@@ -170,17 +166,18 @@ class Todoist(inkycal_module):
                         line_x, line_y = line_positions[cursor]
 
                         if todo['section']:
-                            # Add todos section name
-                            write(
-                                im_colour, line_positions[cursor],
-                                (section_offset, line_height),
-                                todo['section'], font=self.font, alignment='left')
+                            draw_avatar(im_black,
+                                        im_colour,
+                                        (line_x, line_y),
+                                        (line_height, line_height),
+                                        todo['section'],
+                                        font=ImageFont.truetype(self.font.path, self.fontsize - 4))
 
                         # Add todos due if not empty
                         if todo['due']:
                             write(
                                 im_black,
-                                (line_x + section_offset, line_y),
+                                (line_x + line_height, line_y),
                                 (due_offset, line_height),
                                 todo['due'], font=self.font, alignment='left')
 
@@ -188,8 +185,8 @@ class Todoist(inkycal_module):
                             # Add todos name
                             write(
                                 im_black,
-                                (line_x + section_offset + due_offset, line_y),
-                                (im_width - section_offset - due_offset, line_height),
+                                (line_x + line_height + due_offset, line_y),
+                                (im_width - line_height - due_offset, line_height),
                                 todo['name'], font=self.font, alignment='left')
 
                         cursor += 1

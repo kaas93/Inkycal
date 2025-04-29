@@ -483,12 +483,8 @@ class Weather(inkycal_module):
         draw_icon(im_colour, temperature_icon_pos, (icon_small, row_height),
                   '\uf053')
 
-        if is_negative(temperature):
-            write(im_black, temperature_pos, (col_width - icon_small, row_height),
-                  temperature, font=self.font)
-        else:
-            write(im_black, temperature_pos, (col_width - icon_small, row_height),
-                  temperature, font=self.font)
+        write(im_black, temperature_pos, (col_width - icon_small, row_height),
+                temperature, font=self.font)
 
         draw_icon(im_colour, humidity_icon_pos, (icon_small, row_height),
                   '\uf07a')

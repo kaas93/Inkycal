@@ -346,3 +346,36 @@ def draw_border_2(im: Image, xy: Tuple[int, int], size: Tuple[int, int], radius:
     w, h = size
 
     draw.rounded_rectangle(xy=(x, y, x + w, y + h), outline="black", radius=radius)
+
+def draw_avatar(im_black: Image, im_colour: Image, xy: Tuple[int, int], size: Tuple[int, int], name: str, font=None):
+    """Draws an avatar with the initials of a name.
+
+    Args:
+      - im: The image on which the avatar should be drawn (usually im_black or
+        im_colour).
+
+      - xy: Tuple representing the top-left corner of the avatar e.g. (32, 100)
+        where 32 is the x-coordinate and 100 is the y-coordinate.
+
+      - size: Size of the avatar as a tuple -> (width, height).
+
+      - name: The name to be used for the avatar.
+    """
+    initials = "".join([word[0].upper() for word in name.split()])
+
+    avatarBg = Image.new("RGBA", size, color="white")
+
+    draw = ImageDraw.Draw(avatarBg)
+    draw.circle((0, 0), size, fill="black", font=font)
+
+    im_colour.paste(avatarBg, xy)
+
+    avatar = Image.new("RGBA", size, color="white")
+
+    draw = ImageDraw.Draw(avatar)
+    text_width, text_height = draw.textsize(initials, font=font)
+    text_x = (size[0] - text_width) // 2
+    text_y = (size[1] - text_height) // 2
+    draw.text((text_x, text_y), initials, fill="black", font=font)
+
+    im_black.paste(avatar, xy)
