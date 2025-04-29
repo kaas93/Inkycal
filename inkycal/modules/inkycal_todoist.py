@@ -168,10 +168,10 @@ class Todoist(inkycal_module):
                         if todo['section']:
                             draw_avatar(im_black,
                                         im_colour,
-                                        (line_x, line_y),
+                                        (line_x, line_y + 2),
                                         (line_height - 2, line_height - 2),
                                         todo['section'],
-                                        font=ImageFont.truetype(self.font.path, self.fontsize - 4))
+                                        font=ImageFont.truetype(self.font.path, self.fontsize - 2))
 
                         # Add todos due if not empty
                         if todo['due']:

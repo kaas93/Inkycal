@@ -376,7 +376,7 @@ def draw_avatar(im_black: Image, im_colour: Image, xy: Tuple[int, int], size: Tu
     text_width = draw.textlength(initials, font=font)
     text_height = font.getbbox(initials)[3]
     text_x = (size[0] - text_width) // 2
-    text_y = (size[1] - text_height) // 2
+    text_y = (size[1] - text_height) // 2 - 2
     draw.text((text_x, text_y), initials, fill="black", font=font)
 
     im_black.paste(avatar, xy)
