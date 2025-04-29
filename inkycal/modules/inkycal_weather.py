@@ -366,18 +366,18 @@ class Weather(inkycal_module):
         # Positions for current weather details
         weather_icon_pos = (col1, 0)
         temperature_icon_pos = (col2, row1)
-        temperature_pos = (col2 + icon_small, row1)
+        temperature_pos = (col2 + icon_small - 2, row1)
         humidity_icon_pos = (col2, row2)
-        humidity_pos = (col2 + icon_small, row2)
+        humidity_pos = (col2 + icon_small - 2, row2)
         windspeed_icon_pos = (col2, row3)
-        windspeed_pos = (col2 + icon_small, row3)
+        windspeed_pos = (col2 + icon_small - 2, row3)
 
         # Positions for sunrise, sunset, moonphase
         moonphase_pos = (col3, row1)
         sunrise_icon_pos = (col3, row2)
-        sunrise_time_pos = (col3 + icon_small, row2)
+        sunrise_time_pos = (col3 + icon_small - 2, row2)
         sunset_icon_pos = (col3, row3)
-        sunset_time_pos = (col3 + icon_small, row3)
+        sunset_time_pos = (col3 + icon_small - 2, row3)
 
         # Positions for forecast 1
         stamp_fc1 = (col4, row1) # noqa
@@ -476,7 +476,7 @@ class Weather(inkycal_module):
         moon_phase = get_moon_phase()
 
         # Fill weather details in col 1 (current weather icon)
-        draw_icon(im_colour, weather_icon_pos, (col_width, im_height),
+        draw_icon(im_colour, weather_icon_pos, (col_width - 4, im_height - 4),
                   weather_icons[weather_icon])
 
         # Fill weather details in col 2 (temp, humidity, wind)
@@ -533,7 +533,7 @@ class Weather(inkycal_module):
         draw_border(im_black, (col1, row1), (col_width * 3 - 3, border_h),
                     shrinkage=(0, 0))
 
-        for _ in range(4, 8):
+        for _ in range(4, 7):
             draw_border(im_black, (eval(f'col{_}'), row1), (border_w, border_h),
                         shrinkage=(0, 0))
 
