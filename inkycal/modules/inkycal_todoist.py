@@ -126,7 +126,7 @@ class Todoist(inkycal_module):
         simplified = [
             {
                 'name': task.content,
-                'due': arrow.get(task.due.date, "YYYY-MM-DD").format("DD-MM-YY") if task.due else "",
+                'due': "[" + arrow.get(task.due.date, "YYYY-MM-DD").format("DD-MM-YY") + "]" if task.due else "",
                 'priority': task.priority,
                 'section': section_names_by_id[task.section_id],
                 'project': filtered_project_ids_and_names[task.project_id]
