@@ -85,12 +85,12 @@ class Todoist(inkycal_module):
 
         # Set some parameters for formatting todos
         line_spacing = 1
-        text_bbox_height = self.font.getbbox("hg")
-        line_height = text_bbox_height[3] + line_spacing + 2
-        max_lines = im_height // line_height
+        text_bbox_height = self.font.getbbox("hg")[3]
+        line_height = text_bbox_height + line_spacing + 2
+        max_lines = (im_height - 24)// line_height
 
         # Calculate padding from top so the lines look centralised
-        spacing_top = int(im_height % line_height / 2)
+        spacing_top = 24 + int(im_height % line_height / 2)
 
         # Calculate line_positions
         line_positions = [
@@ -156,6 +156,12 @@ class Todoist(inkycal_module):
                 groups[group_of_current_task].append(task)
 
         logger.debug(f"grouped: {groups}")
+
+        write(
+            im_colour,
+            (0, int(im_height % line_height / 2)),
+            (im_width, line_height),
+            "Upcoming Events", font=ImageFont.truetype(self.font.path, self.fontsize + 4), alignment='center')
 
         # Add the parsed todos on the image
         cursor = 0
