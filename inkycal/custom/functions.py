@@ -366,7 +366,7 @@ def draw_avatar(im_black: Image, im_colour: Image, xy: Tuple[int, int], size: Tu
     avatarBg = Image.new("RGBA", size, color="white")
 
     draw = ImageDraw.Draw(avatarBg)
-    draw.circle((size[0] // 2, size[1] // 2), size[1] // 2, fill="black")
+    draw.circle((size[0] // 2, size[1] // 2), size[1] // 2, outline="black", width=2)
 
     im_colour.paste(avatarBg, xy)
 
