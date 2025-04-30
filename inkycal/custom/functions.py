@@ -381,19 +381,6 @@ def draw_avatar(im_black: Image, im_colour: Image, xy: Tuple[int, int], size: Tu
 
     im_black.paste(avatar, xy)
 
-def draw_line(im: Image, xy: Tuple[int, int], size: Tuple[int, int], thickness: int = 1):
-    """Draws a line on the image.
-
-    Args:
-      - im: The image on which the line should be drawn (usually im_black or
-        im_colour).
-
-      - xy: Tuple representing the start and end point of the line e.g. (32, 100)
-        where 32 is the x-coordinate and 100 is the y-coordinate.
-
-      - size: Size of the line as a tuple -> (width, height).
-
-      - colour: Colour of the line.
-    """
+def draw_line(im: Image, p1: Tuple[int, int], p2: Tuple[int, int], thickness: int = 1):
     draw = ImageDraw.Draw(im)
-    draw.line([xy, size], fill="black", width=thickness)
+    draw.line([p1, p2], fill="black", width=thickness)

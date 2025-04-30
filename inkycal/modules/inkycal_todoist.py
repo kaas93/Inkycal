@@ -90,7 +90,8 @@ class Todoist(inkycal_module):
         max_lines = (im_height - self.fontsize - 12)// line_height
 
         # Calculate padding from top so the lines look centralised
-        spacing_top = self.fontsize + 12 + int(im_height % line_height / 2)
+        corrective_spacing = int(im_height % line_height / 2)
+        spacing_top = self.fontsize + 12 + corrective_spacing
 
         # Calculate line_positions
         line_positions = [
@@ -159,11 +160,16 @@ class Todoist(inkycal_module):
 
         write(
             im_colour,
-            (0, int(im_height % line_height / 2)),
+            (0, corrective_spacing),
             (im_width, line_height),
             "Upcoming Events", font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize + 4), alignment='center')
 
-        draw_line(im_colour, [0, line_height + int(im_height % line_height / 2)], [im_width, 2], 2)
+        draw_line(
+            im_colour, 
+            [0, line_height + corrective_spacing],
+            [im_width, line_height + corrective_spacing],
+            2
+        )
 
         # Add the parsed todos on the image
         cursor = 0
