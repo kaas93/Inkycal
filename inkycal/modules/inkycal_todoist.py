@@ -86,12 +86,12 @@ class Todoist(inkycal_module):
         # Set some parameters for formatting todos
         line_spacing = 1
         text_bbox_height = self.font.getbbox("hg")[3]
-        line_height = text_bbox_height + line_spacing + 2
+        line_height = text_bbox_height + line_spacing + 3
         max_lines = (im_height - self.fontsize - 12)// line_height
 
         # Calculate padding from top so the lines look centralised
         corrective_spacing = int(im_height % line_height / 2)
-        spacing_top = self.fontsize + 12 + corrective_spacing
+        spacing_top = self.fontsize + 16 + corrective_spacing
 
         # Calculate line_positions
         line_positions = [
@@ -144,7 +144,7 @@ class Todoist(inkycal_module):
             if task["section"]:
                 section_lengths.append(int(self.font.getlength(task['section']) * 1.1))
             if task["due"]:
-                due_lengths.append(int(self.font.getlength(task['due']) * 0.925))
+                due_lengths.append(int(self.font.getlength(task['due']) * 0.95))
 
         # Get maximum width of project dues for selected font
         due_offset = int(max(due_lengths)) if due_lengths else 0
@@ -159,15 +159,15 @@ class Todoist(inkycal_module):
         logger.debug(f"grouped: {groups}")
 
         write(
-            im_colour,
-            (0, 4),
-            (im_width, line_height),
-            "Upcoming Events", font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize + 4), alignment='center')
+            im_black,
+            (0, 0),
+            (im_width, line_height - 2),
+            "Upcoming Events", font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize + 2), alignment='center')
 
         draw_line(
             im_colour, 
-            (0, line_height + 10),
-            (im_width, line_height + 10),
+            (0, line_height + 2),
+            (im_width, line_height + 2),
             4
         )
 
@@ -182,16 +182,16 @@ class Todoist(inkycal_module):
                         if todo['section']:
                             draw_avatar(im_black,
                                         im_colour,
-                                        (line_x, line_y + 4),
-                                        (line_height - 4, line_height - 4),
+                                        (line_x, line_y + 3),
+                                        (line_height - 3, line_height - 3),
                                         todo['section'],
-                                        font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize - 2))
+                                        font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize - 3))
 
                         # Add todos due if not empty
                         if todo['due']:
                             write(
                                 im_black,
-                                (line_x + line_height, line_y + 1),
+                                (line_x + line_height + 1, line_y),
                                 (due_offset, line_height),
                                 todo['due'], font=ImageFont.truetype(self.font.path, self.fontsize - 2), alignment='left')
 

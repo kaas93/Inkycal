@@ -312,7 +312,7 @@ class Weather(inkycal_module):
         # |----------|----------|----------|----------|----------|----------|----------|
 
         # Calculate size rows and columns
-        col_width = im_width // 6
+        col_width = (im_width - 6) // 6
 
         # Ratio width height
         image_ratio = im_width / im_height
@@ -341,7 +341,6 @@ class Weather(inkycal_module):
         col4 = col3 + col_width
         col5 = col4 + col_width
         col6 = col5 + col_width
-        col7 = col6 + col_width
 
         # Calculate the y-axis position of each row
         line_gap = int((im_height - spacing_top - 3 * row_height) // 4)
@@ -364,40 +363,24 @@ class Weather(inkycal_module):
         ###########################################################################
 
         # Positions for current weather details
-        weather_icon_pos = (col1, 0)
-        temperature_icon_pos = (col2, row1)
-        temperature_pos = (col2 + icon_small - 2, row1)
-        humidity_icon_pos = (col2, row2)
-        humidity_pos = (col2 + icon_small - 2, row2)
+        weather_icon_pos = (col1 + 6, 0)
+        temperature_icon_pos = (col2, row1 + 6)
+        temperature_pos = (col2 + icon_small - 2, row1 + 6)
+        humidity_icon_pos = (col2, row2 + 4)
+        humidity_pos = (col2 + icon_small - 2, row2 + 4)
         windspeed_icon_pos = (col2, row3)
         windspeed_pos = (col2 + icon_small - 2, row3)
 
         # Positions for sunrise, sunset, moonphase
-        moonphase_pos = (col3 - 4, row1)
-        sunrise_icon_pos = (col3 - 4, row2)
-        sunrise_time_pos = (col3 - 4 + icon_small - 2, row2)
+        moonphase_pos = (col3 - 4, row1 + 6)
+        sunrise_icon_pos = (col3 - 4, row2 + 4)
+        sunrise_time_pos = (col3 - 4 + icon_small - 2, row2 + 4)
         sunset_icon_pos = (col3 - 4, row3)
         sunset_time_pos = (col3 - 4 + icon_small - 2, row3)
 
-        # Positions for forecast 1
-        stamp_fc1 = (col4, row1) # noqa
-        icon_fc1 = (col4, row1 + row_height) # noqa
-        temp_fc1 = (col4, row3) # noqa
-
-        # Positions for forecast 2
-        stamp_fc2 = (col5, row1) # noqa
-        icon_fc2 = (col5, row1 + row_height) # noqa
-        temp_fc2 = (col5, row3) # noqa
-
-        # Positions for forecast 3
-        stamp_fc3 = (col6, row1) # noqa
-        icon_fc3 = (col6, row1 + row_height) # noqa
-        temp_fc3 = (col6, row3) # noqa
-
-        # Positions for forecast 4
-        stamp_fc4 = (col7, row1) # noqa
-        icon_fc4 = (col7, row1 + row_height) # noqa
-        temp_fc4 = (col7, row3) # noqa
+        fc_temps = [(col4, row3), (col5, row3), (col6, row3)]
+        fc_icons = [(col4, row1 + row_height), (col5, row1 + row_height), (col6, row1 + row_height)]
+        fc_stamps = [(col4, row1), (col5, row1), (col6, row1)]
 
         # Create current-weather and weather-forecast objects
         logging.debug('looking up location by ID')
@@ -476,7 +459,7 @@ class Weather(inkycal_module):
         moon_phase = get_moon_phase()
 
         # Fill weather details in col 1 (current weather icon)
-        draw_icon(im_colour, weather_icon_pos, (col_width - 4, im_height - 4),
+        draw_icon(im_colour, weather_icon_pos, (col_width - 8, im_height - 8),
                   weather_icons[weather_icon])
 
         # Fill weather details in col 2 (temp, humidity, wind)
@@ -519,12 +502,10 @@ class Weather(inkycal_module):
             icon = weather_icons[fc_data[f'fc{pos}']['icon']]
             temp = fc_data[f'fc{pos}']['temp']
 
-            write(im_black, eval(f'stamp_fc{pos}'), (col_width, row_height),
+            write(im_black, fc_stamps[pos - 1], (col_width, row_height),
                   stamp, font=ImageFont.truetype(self.font.path, self.fontsize + 2))
-            draw_icon(im_colour, eval(f'icon_fc{pos}'), (col_width, row_height + line_gap * 2),
-                      icon)
-            write(im_black, eval(f'temp_fc{pos}'), (col_width, row_height),
-                  temp, font=self.font)
+            draw_icon(im_colour, fc_icons[pos - 1], (col_width, row_height + line_gap * 2), icon)
+            write(im_black, fc_temps[pos - 1], (col_width, row_height), temp, font=self.font)
 
         border_h = row3 + row_height
         border_w = col_width - 3  # leave 3 pixels gap
