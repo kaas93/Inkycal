@@ -161,7 +161,9 @@ class Todoist(inkycal_module):
             im_colour,
             (0, int(im_height % line_height / 2)),
             (im_width, line_height),
-            "Upcoming Events", font=ImageFont.truetype(self.font.path, self.fontsize + 4), alignment='center')
+            "Upcoming Events", font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize + 4), alignment='center')
+
+        draw_line(im_colour, [0, line_height + int(im_height % line_height / 2)], [im_width, 2], 2)
 
         # Add the parsed todos on the image
         cursor = 0
