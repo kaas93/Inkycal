@@ -160,15 +160,15 @@ class Todoist(inkycal_module):
 
         write(
             im_colour,
-            (0, corrective_spacing),
+            (0, 4),
             (im_width, line_height),
             "Upcoming Events", font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize + 4), alignment='center')
 
         draw_line(
             im_colour, 
-            [0, line_height + corrective_spacing],
-            [im_width, line_height + corrective_spacing],
-            2
+            (0, line_height + 10),
+            (im_width, line_height + 10),
+            4
         )
 
         # Add the parsed todos on the image
@@ -185,7 +185,7 @@ class Todoist(inkycal_module):
                                         (line_x, line_y + 4),
                                         (line_height - 4, line_height - 4),
                                         todo['section'],
-                                        font=ImageFont.truetype(self.font.path, self.fontsize - 2))
+                                        font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize - 2))
 
                         # Add todos due if not empty
                         if todo['due']:
