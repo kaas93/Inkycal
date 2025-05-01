@@ -120,19 +120,19 @@ class Todoist(inkycal_module):
                                 'double check spellings in project_filter or leave'
                                 'empty')
             # filtered version of all active tasks
-            all_active_tasks = [task for task in all_active_tasks if task.project_id in filtered_project_ids]
+            all_active_tasks = [task for task in all_active_tasks if task.project_id in filtered_project_ids and (task.due and task.due.date)]
             section_names_by_id = {section_id: self._api.get_section(section_id).name for section_id in [task.section_id for task in all_active_tasks]}
 
         # Simplify the tasks for faster processing
         simplified = [
             {
                 'name': task.content,
-                'due': "[" + arrow.get(task.due.date, "YYYY-MM-DD").format("DD-MM-YY") + "]" if task.due else "",
+                'due': "[" + arrow.get(task.due.date, "YYYY-MM-DD").format("DD-MM-YY") + "]",
                 'priority': task.priority,
                 'section': section_names_by_id[task.section_id],
                 'project': filtered_project_ids_and_names[task.project_id]
             }
-            for task in all_active_tasks
+            for task in sorted(all_active_tasks, key=lambda x: x.due.date)
         ]
 
         logger.debug(f'simplified: {simplified}')
@@ -174,39 +174,37 @@ class Todoist(inkycal_module):
         # Add the parsed todos on the image
         cursor = 0
         for name, todos in groups.items():
-            if todos:
-                for todo in todos:
-                    if cursor < max_lines:
-                        line_x, line_y = line_positions[cursor]
+            if not todos: continue
+            for todo in todos:
+                if cursor < max_lines:
+                    line_x, line_y = line_positions[cursor]
 
-                        if todo['section']:
-                            draw_avatar(im_black,
-                                        im_colour,
-                                        (line_x, line_y + 3),
-                                        (line_height - 3, line_height - 3),
-                                        todo['section'],
-                                        font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize - 3))
+                    if todo['section']:
+                        draw_avatar(im_black,
+                                    im_colour,
+                                    (line_x, line_y + 3),
+                                    (line_height - 3, line_height - 3),
+                                    todo['section'],
+                                    font=ImageFont.truetype(fonts['NotoSansUI-Bold'], self.fontsize - 3))
 
-                        # Add todos due if not empty
-                        if todo['due']:
-                            write(
-                                im_black,
-                                (line_x + line_height + 1, line_y),
-                                (due_offset, line_height),
-                                todo['due'], font=ImageFont.truetype(self.font.path, self.fontsize - 2), alignment='left')
+                    write(
+                        im_black,
+                        (line_x + line_height + 1, line_y),
+                        (due_offset, line_height),
+                        todo['due'], font=ImageFont.truetype(self.font.path, self.fontsize - 2), alignment='left')
 
-                        if todo['name']:
-                            # Add todos name
-                            write(
-                                im_black,
-                                (line_x + line_height + due_offset, line_y),
-                                (im_width - line_height - due_offset, line_height),
-                                todo['name'], font=self.font, alignment='left')
+                    if todo['name']:
+                        # Add todos name
+                        write(
+                            im_black,
+                            (line_x + line_height + due_offset, line_y),
+                            (im_width - line_height - due_offset, line_height),
+                            todo['name'], font=self.font, alignment='left')
 
-                        cursor += 1
-                    else:
-                        logger.error('More todos than available lines')
-                        break
+                    cursor += 1
+                else:
+                    logger.error('More todos than available lines')
+                    break
 
         # return the images ready for the display
         return im_black, im_colour
